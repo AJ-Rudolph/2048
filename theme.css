@@ -1,0 +1,18 @@
+html,body {
+    background-color: #FAF8EF;
+    color: #786D65;
+}
+
+.center {
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+canvas {
+    background-color: #CDC0B3; 
+    width: 475px;
+    height: 475px;
+    border-radius: 10px;
+
+}
