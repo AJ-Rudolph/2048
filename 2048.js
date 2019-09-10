@@ -1,33 +1,33 @@
+
 //make sure the webpage is fully loaded
 window.onload=function() {
+
     //gets the canvas we'll draw to 
-    let canvas =document.getElementById("2048");
+    let canvas = document.getElementById("2048");
+  
     //graphics element we will draw with
     let g = canvas.getContext("2d");
-
-
 
     window.addEventListener("keydown", function(event) {
            
         switch(event.keyCode) {
             //left arrow
             case 37: {
-                this.console.log("left");
+                board.mergeLeft();
                 break;
             }
             //up arrow
             case 38: {
-                this.console.log("up");
                 break;
             }
             //right arrow
             case 39: {
-                this.console.log("right");
+                board.mergeRight();
                 break;
             }
             //down arrow
             case 40: {
-                this.console.log("down");
+    
                 break;
             }
         }
@@ -37,23 +37,33 @@ window.onload=function() {
 
 
     class Tile {
-        constructor() {
+        constructor(value) {
             this.color= '#EEE3DA';
-            this.value=2;
+            this.value= value || 2;
+            
+            this.boardx=0;
+            this.boardy=0;
         }
         
+       
+        doubleValue(newValue) {
+            this.value*=2;
+        }
+        
+
+
         render(x,y) {
             //update coordinates to proper location
-            x=15+x*100;
-            y=15+y*100;
+            x=15+x*115;
+            y=15+y*115;
             g.beginPath();
 
-            g.fillStyle =this.color;
+            g.fillStyle = this.color;
             g.fillRect(x,y,100,100);
 
             g.font= '50px Arial';
             g.fillStyle = "black";
-            g.fillText(""+ this.value,x+35,y+68);
+            g.fillText("" + this.value, x+35, y+68);
 
 
 
@@ -70,7 +80,7 @@ window.onload=function() {
             this.width = 4;
             this.height = 4;
             this.board = [
-                [new Tile(),null,null,null],
+                [new Tile(),new Tile(),null,null],
                 [null,null,null,null],
                 [null,null,null,null],
                 [null,null,null,null],
@@ -78,16 +88,84 @@ window.onload=function() {
         }
 
         input() {
-            // moving right
-            for (let i=0;i<this.board.length;i++) {
-                for(let j=0; j<this.board.length;j++) {
-                    //merge
-                        
+        
+        }
 
-                    //move to the correct position
+        mergeRight() {
+
+            for (let x =0; x<this.board.length; x++) {
+                let merge = 3;
+                let tail = 0;
+                while(tail < merge) {
+                    // if the two values looking to be merged are both numbers
+                    if(this.board[x][merge] !== null && this.board[x][merge-1]  != null) {
+
+                        // if the numbers are equal
+                        if(this.board[x][merge].value === this.board[x][merge-1].value) {
+                            this.board[x][merge].doubleValue();
+                            this.board[x][merge-1] =null;
+                        }
+                        merge -=1;
+                        continue;
+                    }    
+                    // move everything over to right up until the value just merged
+                    for(let i = (this.board[x][merge] !== null) ? merge-1: merge; i>tail; i--) {
+                        this.board[x][i] = this.board[x][i-1];
+                    }
+                    this.board[x][tail]=null;
+                    tail +=1;
+                    
+
                 }
             }
         }
+
+        mergeLeft() {
+            for (let x =0; x<this.board.length; x++) {
+                let merge = 0;
+                let tail = 3;
+                while(merge < tail) {
+                    // if the two values looking to be merged are both numbers
+                    if(this.board[x][merge] !== null && this.board[x][merge+1]  != null) {
+
+                        // if the numbers are equal
+                        if(this.board[x][merge].value === this.board[x][merge+1].value) {
+                            this.board[x][merge].doubleValue();
+                            this.board[x][merge+1] =null;
+                        }
+                        merge +=1;
+                        continue;
+                    }    
+                    // move everything over to left up until the value just merged
+                    for(let i = (this.board[x][merge] !== null) ? merge+1: merge; i<tail; i++) {
+                        this.board[x][i] = this.board[x][i+1];
+                    }
+                    this.board[x][tail]=null;
+                    tail -=1;
+                    
+
+                }
+            }
+        }
+        
+
+        print () {
+            for (let i =0;i<this.board.length;i++){
+                let rowStr="";
+                for (let j=0; j<this.board[i][j].value;j++){
+                    if(this.board[i][j!==null]) {
+                        rowStr+='[' +(""+this.board[i][j].value) + "]";
+
+                    }
+                    else {
+                        rowStr="[ ]";
+                    }
+                    console.log(rowStr);
+                }
+            
+            }   
+        }
+        
         render() {
             g.beginPath(); //start drawing
             //draw buffer rectangles
@@ -99,33 +177,22 @@ window.onload=function() {
                 g.fillRect(0,i*115,canvas.width,15);
             }
 
-
-
-
             //draw tiles
             for(let i=0; i<this.board.length;i++) {
                 for(let j=0; j<this.board[i].length; j++) {
-                    let tile = this.board[j][i];
+                    let tile = this.board[i][j];
                     if(tile === null) continue;
-                    else  tile.render(i,j);
-                    
-                    
+                    else  tile.render(j,i);
 
                 }
             }
             g.closePath(); //stop drawing
         }
 
-    
-
     }
+ 
 
-    let board= new Board;
-
-
-
-
-
+    let board= new Board();
 
     function render() {
         //clerar the window buffer
