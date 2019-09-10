@@ -2,24 +2,47 @@
 <html>
     <head>
         <link rel="Stylesheet" type="text/css" href="./theme.css" />
-        <script src =" ./2048.js" ></script>
-        <title> 2048</title>
+        <script src =" ./2048.js"></script>
+        <title> 2048 </title>
     </head>
 
     <body>
-        <div class="center">
-                <h1>2048</h1>
-        </div>
-        
-        <div class="center">
-            <canvas id="2048" width="475" height="475"> </canvas>
-        </div>
-        
-        <div class="center">
-            <p> 
-                <b> HOW TO PLAY:</b> Use your <b>arrow keys</b> to move the tiles. When two tiles with the same number touch, they merge into one!
-            </p>
-        </div>
+        <section class="content">
+            
+            <div class="header">
+                <h1>2048.js</h1>
+
+                <div class=score-area>
+                    <div class="score">
+                        <p>Score</p>
+                        <h2>0</h2>
+                    </div>
+                    <div class="best">
+                        <p>Best</p>
+                        <h2>0</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game">
+                <canvas id="2048" width="475" height="475"></canvas>
+            </div>
+            
+            <div class="info">
+                <p class="info-text"> 
+                    <b> HOW TO PLAY:</b> Use your <b>arrow keys</b> to move the tiles. 
+                    When two tiles with the same number touch, they merge into one!
+                </p>
+
+                <hr/>
+
+                <p class="info-text"> 
+                    <b>Note:</b> The game on <b><a href="">this site</a></b> is the original 
+                    version of 2048. Apps for <a href="#">iOS</a> and <a href="#">Android</a> are also available. Other versions are derivatives or fakes, and should be used with caution. 
+                </p>
+            </div>
+
+        </section>
 
     </body>
 </html>
